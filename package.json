@@ -26,6 +26,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "buildnserve": "react-scripts build && serve -s build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
