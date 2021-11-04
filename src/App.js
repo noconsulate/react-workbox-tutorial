@@ -77,6 +77,10 @@ function App() {
     supabaseUpdate(newArray)
   }
 
+  const handleUpdate = () => {
+    swListener.skipWaiting(registration.waiting);
+  }
+
   return (
     <div className="App">
       <div>
@@ -94,8 +98,19 @@ function App() {
         <input id="insert" type='number' value={input} onChange={handleInput} />
         <button onClick={handleSubmit}>Submit</button>
       </div>
+      <br />
+      <UpdateWaiting updateWaiting={updateWaiting} handleUpdate={handleUpdate}/>
     </div>
   );
 }
 
 export default App;
+
+const UpdateWaiting = ({updateWaiting, handleUpdate}) => {
+  if (!updateWaiting) return <></>
+  return (
+    <div>
+      Update waiting! <button onClick={handleUpdate}>Update</button>
+    </div>
+  )
+}
