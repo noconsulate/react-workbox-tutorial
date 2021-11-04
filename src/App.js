@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ServiceWorkerUpdateListener } from './ServiceWorkerUpdateListener.js'
 import { createClient } from '@supabase/supabase-js'
 
 import './App.css';
@@ -32,9 +33,37 @@ function App() {
   const [numbers, setNumbers] = useState([])
   const [input, setInput] = useState('')
 
+  const [updateWaiting, setUpdateWaiting] = useState(false);
+  const [registration, setRegistration] = useState(null);
+  const [swListener, setSwListener] = useState({});
+
   useEffect(async () => {
     const data = await supabaseFetch()
     setNumbers(data)
+
+       if (process.env.NODE_ENV !== "development") {
+      let listener = new ServiceWorkerUpdateListener();
+      setSwListener(listener);
+      listener.onupdateinstalling = (installingEvent) => {
+        console.log("SW installed", installingEvent);
+      };
+      listener.onupdatewaiting = (waitingEvent) => {
+        console.log("new update waiting", waitingEvent);
+        setUpdateWaiting(true);
+      };
+      listener.onupdateready = (event) => {
+        console.log("updateready event");
+        window.location.reload();
+      };
+      navigator.serviceWorker.getRegistration().then((reg) => {
+        listener.addRegistration(reg);
+        setRegistration(reg);
+      });
+
+      return () => listener.removeEventListener();
+    } else {
+      //do nothing because no sw in development
+    }
   }, [])
 
   const handleInput = (e) => {

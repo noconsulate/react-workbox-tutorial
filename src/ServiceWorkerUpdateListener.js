@@ -2,7 +2,7 @@
  * Listens for update events on ServerWorkerRegistrations
  * @version 1.1
  */
-class ServiceWorkerUpdateListener extends EventTarget {
+export class ServiceWorkerUpdateListener extends EventTarget {
 
     /**
      * Add a registration to start listening for update events
