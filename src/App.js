@@ -34,7 +34,7 @@ function App() {
 
   useEffect(async () => {
     const data = await supabaseFetch()
-    setNumbers(data)
+    if (data) setNumbers(data)
   }, [])
 
   const handleInput = (e) => {
@@ -51,7 +51,7 @@ function App() {
   return (
     <div className="App">
       <div>
-        numbers: {numbers.map((number, index) => {
+        numbers: {numbers.length > 0 && numbers.map((number, index) => {
             if (index < numbers.length - 1) {
               return <React.Fragment key={index}>{number}, </React.Fragment>;
             } else {
