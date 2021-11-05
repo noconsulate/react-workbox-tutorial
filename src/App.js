@@ -39,9 +39,9 @@ function App() {
 
   useEffect(async () => {
     const data = await supabaseFetch()
-    setNumbers(data)
+    if (data) setNumbers(data)
 
-       if (process.env.NODE_ENV !== "development") {
+    if (process.env.NODE_ENV !== "development") {
       let listener = new ServiceWorkerUpdateListener();
       setSwListener(listener);
       listener.onupdateinstalling = (installingEvent) => {
@@ -84,7 +84,7 @@ function App() {
   return (
     <div className="App">
       <div>
-        numbers: {numbers.map((number, index) => {
+        numbers: {numbers.length > 0 && numbers.map((number, index) => {
             if (index < numbers.length - 1) {
               return <React.Fragment key={index}>{number}, </React.Fragment>;
             } else {
