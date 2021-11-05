@@ -77,8 +77,6 @@ const supabaseUrl = process.env.REACT_APP_SUPABASE_URL
 
 registerRoute(
   ({ url }) => {
-  console.log(url.host, supabaseUrl)
-
     return `https://${url.host}` === supabaseUrl
   },
   new NetworkFirst({
