@@ -11,7 +11,7 @@ import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
+import { StaleWhileRevalidate, NetworkFirst } from 'workbox-strategies';
 
 clientsClaim();
 
@@ -70,3 +70,18 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
+
+// Cache PATCH requests to Supabase
+
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL
+
+registerRoute(
+  ({ url }) => {
+  console.log(url.host, supabaseUrl)
+
+    return `https://${url.host}` === supabaseUrl
+  },
+  new NetworkFirst({
+    cacheName: "supabase-GET",
+  })
+);
