@@ -11,7 +11,9 @@ import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate, NetworkFirst } from 'workbox-strategies';
+import { StaleWhileRevalidate, NetworkFirst, NetworkOnly } from 'workbox-strategies';
+import { BackgroundSyncPlugin } from "workbox-background-sync";
+
 
 clientsClaim();
 
@@ -71,7 +73,7 @@ self.addEventListener('message', (event) => {
 
 // Any other custom service worker logic can go here.
 
-// Cache PATCH requests to Supabase
+// Cache GET requests to Supabase
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL
 
@@ -83,3 +85,20 @@ registerRoute(
     cacheName: "supabase-GET",
   })
 );
+
+// Background sync PATCH requests to Supabase
+
+const bgSyncPlugin = new BackgroundSyncPlugin("PATCH-que", {
+  maxRetentionTyime: 24 * 60,
+});
+
+registerRoute(
+  ({ url }) => {
+    return `https://${url.host}` === supabaseUrl
+  },
+  new NetworkOnly({
+    plugins: [bgSyncPlugin],
+  }),
+  "PATCH"
+);
+
