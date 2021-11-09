@@ -161,8 +161,11 @@ Also you need to install a package:
 
 If you want you can clone the repo for this tutorial. You can start at this point as long as you set up Supabase and configure *.env* as shown above.
 
-`git clone blablabla`
+`git clone https://github.com/noconsulate/react-workbox-tutorial.git
+`
+
 `cd randos`
+
 `git checkout 1-app-ready`
 
 Before we do anything else let's just review the logic of our app real quick. We simply `select` the array **numbers** from **my_set** in Supabase and display them. We have a number input and when submit is clicked we push the value to our existing numbers array, update our local state, and `update` the **numbers** array in **my_set**. So we have a very basic  CRUD app except you can't delete anything so actually it's CRU. 
