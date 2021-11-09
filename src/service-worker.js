@@ -77,9 +77,9 @@ self.addEventListener("message", (event) => {
 
 // Any other custom service worker logic can go here.
 
-// Cache GET requests to Supabase
-
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+
+// Cache GET requests to Supabase
 
 registerRoute(
   ({ url }) => {
